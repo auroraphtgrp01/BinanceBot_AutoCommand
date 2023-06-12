@@ -1,14 +1,19 @@
 import ccxt
 import time
+# exchange = ccxt.binance({
+#     'apiKey': 'IGDKTUg929EQ91wXyQ1eyc3U5jIDXoKtkdajL7Vc6CVIcriMFDP4WEpPi611lqAI',
+#     'secret': 'rxcpcXxM7enU9d9gWx8YuJev0xOrLXlCOenovWn6Qxd3u0T6frUPt9t3fLtJKIkP',
+#     'enableRateLimit': True
+#     })
 exchange = ccxt.binance({
-    'apiKey': 'IGDKTUg929EQ91wXyQ1eyc3U5jIDXoKtkdajL7Vc6CVIcriMFDP4WEpPi611lqAI',
-    'secret': 'rxcpcXxM7enU9d9gWx8YuJev0xOrLXlCOenovWn6Qxd3u0T6frUPt9t3fLtJKIkP',
+    'apiKey': 'GLvzWZNUtNCoev8GBPxqcOavNu3g6XG285IY92KmlzPqU6I7CcgogsPzTDsz5KeU',
+    'secret': 'yWZLKFIdA0vcrynQjQHE84dD8ryF0RWv7iDvMnjCLm5zYnBm0JhoKQLIUy7JvXJ8',
     'enableRateLimit': True
     })
-
 #------------------------------------------------------------------------------------------------------------------------------
 # LIMIT_COMMAND
 def setCommandBuyLimit(symbol_call):
+    print("--------------------------------------------------------------------------------------------------------------")
     print("Nhận lệnh - Đang tiến hành đặt lệnh ")
     print("Tiến hành đặt lệnh mua "+str(symbol_call))
     balance = exchange.fetch_balance()
@@ -42,22 +47,23 @@ def setCommandBuyLimit(symbol_call):
                 #     print("Lỗi khi thực hiện lệnh mua:", e)
                 # print('Giao dịch đã được thực hiện.')
 # ------------------------------------------------------------------------------------------------------------------------
-
                 try:
                     order = exchange.create_limit_buy_order(symbol, amount, last_price)
                     order_id = order['id']
                     print("Order ID của lệnh là: "+str(order_id))
                 except ccxt.ExchangeError as e:
                     print("Lỗi khi đặt lệnh giới hạn mua:", e)
+                print("---------------------------- KIỂM TRA KHỚP LỆNH LIMIT ----------------------------------------------------------")
                 while(True):
                     if(check_limit_buy(symbol)):
                         ticker = exchange.fetch_ticker(symbol_call)
                         last_price = ticker['last']
                         price_After = last_price
-                        sell_price = price_After*1.015
                         amout_after = check_balance(symbol_call)
-                        stop_price = round(price_After*0.985,2)
-                        sell_price = round(price_After*1.015,2)
+                        # GIÁ STOPLOSS
+                        stop_price = round(price_After*0.985,6)
+                        # GIÁ CHỐT LỜI 
+                        sell_price = round(price_After*1.015,6)
                         create_oco_order(symbol_call,amout_after,sell_price,stop_price)
                         print("Đặt lệnh OCO thành công !")
                         break
@@ -73,6 +79,9 @@ def setCommandBuyLimit(symbol_call):
             print('Cặp giao dịch không hoạt động.')
     else:
         print('Không tìm thấy cặp giao dịch trên sàn giao dịch.')
+    print("--------------------------------------------------------------------------------------------------------------")
+
+
 # LIMIT_COMMAND_END
 #------------------------------------------------------------------------------------------------------------------------------
 

@@ -2,7 +2,8 @@ import re
 
 
 def checkNotificationFormat(message_text):
-    if (message_text.upper().find('BIG WHALES') != -1 and message_text.upper().find('BINANCE') != -1 and message_text.upper().find('DURATION') != -1):
+    if (message_text.upper().find('BIG WHALES') != -1 and message_text.upper().find('BINANCE') != -1 and message_text.upper().find('DURATION') != -1
+        and message_text.upper().find('BUY')!=-1):
         return True
     else:
         return False

@@ -9,10 +9,5 @@ def get_public_ip():
         return None
 
 # Gọi hàm để lấy địa chỉ IP công cộng
-public_ip = get_public_ip()
+get_public_ip()
 
-
-if public_ip:
-    print("Địa chỉ IP công cộng của bạn là:", public_ip)
-else:
-    print("Không thể lấy địa chỉ IP công cộng.")

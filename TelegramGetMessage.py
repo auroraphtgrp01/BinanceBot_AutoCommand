@@ -9,7 +9,7 @@ from openpyxl.styles import Alignment
 from datetime import datetime
 import array as arr
 import BinanceBot
-import WhaleHunterFormat
+import WhaleHunterFormat    
 # ---------------------------------------------INFO_TOKEN_GET_API-------------------------------------------------------------
 api_id = 27469665
 api_hash = 'b1778da8e2e6df457ed506e6a3f0bbf9'
@@ -29,6 +29,16 @@ def checkNotification(message_text):
         return False
 # END CHECK
 
+def checkVolume(message_text): 
+    match = re.search(r"24h Vol: (\d+(\.\d+)?)([KMBT]?)", message_text)
+    if match:
+        vol_value = match.group(1)
+        vol_suffix = match.group(3)
+        vol_values = float(vol_value)
+        if(vol_values>=600 and vol_suffix.upper()=='K'):
+            return True
+        if(vol_suffix.upper()=='M'):
+            return True
 
 # GET TOKEN
 def symbolToken(message_text):
@@ -124,8 +134,12 @@ async def main():
             if (WhaleHunterFormat.checkSymbolToken(message_text) != False):
                 symbolToken_Buy = WhaleHunterFormat.checkSymbolToken(
                     message_text)
-                print(symbolToken_Buy)
-                BinanceBot.setCommandBuyLimit(symbolToken_Buy)
+                print("---------------------------- LỆNH MỚI - NEW COMMAND ----------------------------------------------------------")
+                print("TOKEN BUY: "+str(symbolToken_Buy))
+                if(checkVolume(message_text)):
+                    BinanceBot.setCommandBuyLimit(symbolToken_Buy)
+                else:
+                    print("VOLUME KHÔNG ĐẠT !!!")
             # print(message_text)
             # if (symbolToken(message_text) != False):
             #     symbolToken_Buy = symbolToken(message_text)
