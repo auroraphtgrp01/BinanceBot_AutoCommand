@@ -13,8 +13,8 @@ import WhaleHunterFormat
 # ---------------------------------------------INFO_TOKEN_GET_API-------------------------------------------------------------
 api_id = 27469665
 api_hash = 'b1778da8e2e6df457ed506e6a3f0bbf9'
-# group_name = 'cointrendz_whalehunter'
-group_name = 'linkau01'
+group_name = 'cointrendz_whalehunter'
+# group_name = 'linkau01'
 # --------------------------------------------CHECK_PREMIUM_GROUP-------------------------------------------------------------
 # CHECK FORMAT TOKEN
 
@@ -29,12 +29,14 @@ def checkNotification(message_text):
         return False
 # END CHECK
 
+# CHECK VOLUME
 def checkVolume(message_text): 
     match = re.search(r"24h Vol: (\d+(\.\d+)?)([KMBT]?)", message_text)
     if match:
         vol_value = match.group(1)
         vol_suffix = match.group(3)
         vol_values = float(vol_value)
+        # CHECK VOLUME (>= 600K )
         if(vol_values>=600 and vol_suffix.upper()=='K'):
             return True
         if(vol_suffix.upper()=='M'):
@@ -115,14 +117,11 @@ def findPrice_Sell(message_text):
     return ''
 # ------------------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------------------------------
-
-#  ------------------------------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------------------------------
 
 # MAIN_CHECK
 
-
 checkCommand = False
-
 
 async def main():
     async with TelegramClient('session_names', api_id, api_hash) as client:
