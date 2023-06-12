@@ -1,0 +1,22 @@
+from binance.client import Client
+from requests.exceptions import RequestException
+
+# Thay thế 'YOUR_API_KEY' và 'YOUR_API_SECRET' bằng giá trị tương ứng của bạn
+api_key = 'YOUR_API_KEY'
+api_secret = 'YOUR_API_SECRET'
+
+# Khởi tạo đối tượng client sử dụng API key và API secret
+client = Client(api_key, api_secret)
+
+# Kiểm tra kết nối
+try:
+    # Gọi một phương thức không yêu cầu xác thực để kiểm tra kết nối
+    server_time = client.get_server_time()
+    if server_time['serverTime']:
+        print("Kết nối thành công với API Binance.")
+    else:
+        print("Không thể kết nối với API Binance.")
+except RequestException as re:
+    print("Lỗi kết nối:", str(re))
+except Exception as e:
+    print("Đã xảy ra lỗi:", str(e))
