@@ -121,13 +121,10 @@ def findPrice_Sell(message_text):
 
 # MAIN_CHECK
 
-checkCommand = False
-
 async def main():
     async with TelegramClient('session_names', api_id, api_hash) as client:
         @client.on(events.NewMessage(chats=group_name))
         async def handle_new_message(event):
-            global checkCommand
             text = event.message.text
             message_text = str(event.message.text)
             if (WhaleHunterFormat.checkSymbolToken(message_text) != False):
@@ -135,10 +132,7 @@ async def main():
                     message_text)
                 print("---------------------------- LỆNH MỚI - NEW COMMAND ----------------------------------------------------------")
                 print("TOKEN BUY: "+str(symbolToken_Buy))
-                if(checkVolume(message_text)):
-                    BinanceBot.setCommandBuyLimit(symbolToken_Buy)
-                else:
-                    print("VOLUME KHÔNG ĐẠT !!!")
+                BinanceBot.setCommandBuyLimit(symbolToken_Buy)
             # print(message_text)
             # if (symbolToken(message_text) != False):
             #     symbolToken_Buy = symbolToken(message_text)

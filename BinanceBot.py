@@ -25,6 +25,7 @@ def setCommandBuyLimit(symbol_call):
     print("Giá Hiện Tại Của "+str(symbol_call)+" là: "+str(last_price))
     amount = (usdt_balance/last_price) - (usdt_balance/last_price)*0.05   # Số lượng coin BTC muốn mua
     limit_price = last_price # Giá limit mua
+    last_priceUnder1 = last_price - (last_price*0.01)
     
 # Kiểm tra sẵn sàng giao dịch
     exchange.load_markets()
@@ -48,7 +49,7 @@ def setCommandBuyLimit(symbol_call):
                 # print('Giao dịch đã được thực hiện.')
 # ------------------------------------------------------------------------------------------------------------------------
                 try:
-                    order = exchange.create_limit_buy_order(symbol, amount, last_price)
+                    order = exchange.create_limit_buy_order(symbol, amount, last_priceUnder1)
                     order_id = order['id']
                     print("Order ID của lệnh là: "+str(order_id))
                 except ccxt.ExchangeError as e:
@@ -58,7 +59,7 @@ def setCommandBuyLimit(symbol_call):
                     if(check_limit_buy(symbol)):
                         ticker = exchange.fetch_ticker(symbol_call)
                         last_price = ticker['last']
-                        price_After = last_price
+                        price_After = last_price - (last_price*0.01)
                         amout_after = check_balance(symbol_call)
                         # GIÁ STOPLOSS
                         stop_price = round(price_After*0.985,6)
@@ -84,7 +85,6 @@ def setCommandBuyLimit(symbol_call):
 
 # LIMIT_COMMAND_END
 #------------------------------------------------------------------------------------------------------------------------------
-
 #------------------------------------------------------------------------------------------------------------------------------
 #   FUNCTION
 def currentPrice(symbol):
